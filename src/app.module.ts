@@ -1,10 +1,27 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { MongooseModule } from '@nestjs/mongoose';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { UserModule } from './user/user.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    // 환경 변수 설정 (전역 사용 가능)
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+
+    // MongoDB 연결 설정
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get<string>('MONGO_URI'), // 환경 변수에서 MongoDB URI 가져오기
+        useNewUrlParser: true, // MongoDB 드라이버 옵션 추가
+        useUnifiedTopology: true,
+      }),
+      inject: [ConfigService],
+    }),
+
+    UserModule,
+  ],
 })
 export class AppModule {}
