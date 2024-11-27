@@ -17,7 +17,8 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@nestjs/common": "^10.4.11",
@@ -30,6 +31,8 @@
     "rxjs": "^7.8.1"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.6.0",
+    "@commitlint/config-conventional": "^19.6.0",
     "@nestjs/cli": "^10.4.8",
     "@nestjs/schematics": "^10.0.0",
     "@nestjs/testing": "^10.0.0",
@@ -42,7 +45,9 @@
     "eslint": "^9.15.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
+    "husky": "^9.1.7",
     "jest": "^29.5.0",
+    "lint-staged": "^15.2.10",
     "prettier": "^3.4.1",
     "source-map-support": "^0.5.21",
     "supertest": "^7.0.0",
@@ -69,5 +74,11 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "yarn prettier --write",
+      "yarn eslint --fix"
+    ]
   }
 }
