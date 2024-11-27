@@ -12,9 +12,14 @@ export class UserService {
     return this.userModel.find().exec();
   }
 
-  // 특정 유저 조회
+  // 특정 유저 조회 (ID 기반)
   async findOne(id: string): Promise<User> {
     return this.userModel.findById(id).exec();
+  }
+
+  // 특정 유저 조회 (userId 기반)
+  async findByUserId(userId: string): Promise<User> {
+    return this.userModel.findOne({ userId }).exec();
   }
 
   // 유저 생성
