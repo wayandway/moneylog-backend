@@ -18,8 +18,6 @@ import { CommentModule } from './comment/comment.module';
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         uri: configService.get<string>('MONGO_URI'), // 환경 변수에서 MongoDB URI 가져오기
-        useNewUrlParser: true, // MongoDB 드라이버 옵션 추가
-        useUnifiedTopology: true,
       }),
       inject: [ConfigService],
     }),

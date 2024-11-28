@@ -3,12 +3,15 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Post } from './schemas/post.schema';
 import { User } from '../user/schemas/user.schema';
+import { Tag } from './../tag/schemas/tag.schema';
+import { validateTags } from '../utils';
 
 @Injectable()
 export class PostService {
   constructor(
     @InjectModel(Post.name) private postModel: Model<Post>,
-    @InjectModel(User.name) private userModel: Model<User>
+    @InjectModel(User.name) private userModel: Model<User>,
+    @InjectModel(Tag.name) private tagModel: Model<Tag>
   ) {}
 
   // 모든 게시물 조회
@@ -44,12 +47,22 @@ export class PostService {
       }
     }
 
+    // 태그 검증 및 생성
+    if (data.tags && data.tags.length > 0) {
+      data.tags = await validateTags(data.tags, this.tagModel);
+    }
+
     const newPost = new this.postModel(data);
     return newPost.save();
   }
 
   // 게시물 수정
   async update(id: string, data: Partial<Post>): Promise<Post> {
+    // 태그 검증 및 생성
+    if (data.tags && data.tags.length > 0) {
+      data.tags = await validateTags(data.tags, this.tagModel);
+    }
+
     const updatedPost = await this.postModel.findByIdAndUpdate(id, data, { new: true }).exec();
     if (!updatedPost) {
       throw new NotFoundException(`Post with ID ${id} not found`);

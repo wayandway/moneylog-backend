@@ -3,8 +3,8 @@ import { Document } from 'mongoose';
 
 @Schema({ timestamps: true, versionKey: false })
 export class Tag extends Document {
-  @Prop({ required: true, unique: true })
-  name: string; // 태그 이름
+  @Prop({ required: true, unique: true, trim: true })
+  name: string; // 태그 이름 (고유)
 
   @Prop({ default: Date.now })
   createdAt: Date;
