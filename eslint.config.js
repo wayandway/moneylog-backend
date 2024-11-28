@@ -7,6 +7,7 @@ const importPlugin = require('eslint-plugin-import');
 
 module.exports = [
   {
+    ignores: ['.yarn/**'],
     files: ['**/*.ts', '**/*.tsx'], // TypeScript 파일에만 적용
     languageOptions: {
       ecmaVersion: 'latest',
@@ -64,7 +65,7 @@ module.exports = [
           ],
         },
       ],
-      '@typescript-eslint/ban-types': 'warn',
+      //'@typescript-eslint/ban-types': 'warn',
       '@typescript-eslint/no-var-requires': 'warn',
 
       // JavaScript 규칙
