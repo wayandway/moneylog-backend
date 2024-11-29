@@ -22,6 +22,10 @@ export class UserService {
     return this.userModel.findOne({ userId }).exec();
   }
 
+  async findByEmail(email: string): Promise<User | null> {
+    return this.userModel.findOne({ email }).exec();
+  }
+
   // 유저 생성
   async create(data: Partial<User>): Promise<User> {
     const newUser = new this.userModel(data);
