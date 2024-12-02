@@ -16,6 +16,9 @@ export class Post extends Document {
   @Prop({ type: [String], default: [] })
   tags: string[];
 
+  @Prop({ default: false })
+  isPrivate: boolean;
+
   @Prop({ default: Date.now })
   createdAt: Date;
 
