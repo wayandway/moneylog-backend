@@ -3,7 +3,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { PostModule } from './post/post.module';
-import { TagModule } from './tag/tag.module';
 import { CommentModule } from './comment/comment.module';
 import { AuthModule } from './auth/auth.module';
 
@@ -25,7 +24,6 @@ import { AuthModule } from './auth/auth.module';
 
     UserModule,
     PostModule,
-    TagModule,
     CommentModule,
     AuthModule,
   ],

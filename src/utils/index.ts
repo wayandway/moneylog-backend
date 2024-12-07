@@ -1,1 +1,0 @@
-export { validateTags } from './validateTags';
