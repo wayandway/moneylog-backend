@@ -17,10 +17,10 @@ export class AuthService {
    * 회원가입 요청
    */
   async register(userDto: Partial<User>): Promise<{ message: string }> {
-    const { email, userName, password, userId } = userDto;
+    const { email, userName, password, userDomain } = userDto;
 
-    // 이메일 및 userId 중복 확인
-    const existingUser = await this.userModel.findOne({ $or: [{ email }, { userId }] }).exec();
+    // 이메일 및userDomain 중복 확인
+    const existingUser = await this.userModel.findOne({ $or: [{ email }, { userDomain }] }).exec();
     if (existingUser) {
       throw new BadRequestException('Email or User ID is already registered');
     }
@@ -30,7 +30,7 @@ export class AuthService {
 
     // JWT 토큰 생성 (이메일 인증용)
     const token = jwt.sign(
-      { email, userName, password: hashedPassword, userId },
+      { email, userName, password: hashedPassword, userDomain },
       process.env.JWT_SECRET,
       { expiresIn: '1h' } // 토큰 만료시간
     );
@@ -58,7 +58,7 @@ export class AuthService {
         email: string;
         userName: string;
         password: string;
-        userId: string;
+        userDomain: string;
       };
 
       // 이미 등록된 유저인지 확인
@@ -72,7 +72,7 @@ export class AuthService {
         email: decoded.email,
         userName: decoded.userName,
         password: decoded.password, // 이미 암호화된 비밀번호
-        userId: decoded.userId,
+        userDomain: decoded.userDomain,
       });
 
       await newUser.save();
@@ -99,11 +99,9 @@ export class AuthService {
     }
 
     // JWT 토큰 생성
-    const accessToken = jwt.sign(
-      { userId: user.userId, email: user.email },
-      process.env.JWT_SECRET,
-      { expiresIn: '10m' } // 토큰 유효기간
-    );
+    const accessToken = jwt.sign({ userId: user._id.toString(), email: user.email }, process.env.JWT_SECRET, {
+      expiresIn: '1h',
+    });
 
     return { accessToken };
   }
