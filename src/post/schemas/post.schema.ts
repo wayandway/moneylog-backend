@@ -11,7 +11,10 @@ export class Post extends Document {
   content: string;
 
   @Prop({ type: Types.ObjectId, ref: User.name, required: true })
-  author: User;
+  author: Types.ObjectId;
+
+  @Prop({ unique: true, default: null })
+  slug: string;
 
   @Prop({ type: [String], default: [] })
   tags: string[];
