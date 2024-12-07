@@ -35,6 +35,7 @@ const RAW_RUNTIME_STATE =
           ["@nestjs/common", "virtual:89f547019f7689b6bfdef74bf77ad0749d328998306581b92fa6a12b2a073da48a47b537a84b7e30cec647b075f0bae52ccc32217bdecf9f1d99e7228199e510#npm:10.4.11"],\
           ["@nestjs/config", "virtual:89f547019f7689b6bfdef74bf77ad0749d328998306581b92fa6a12b2a073da48a47b537a84b7e30cec647b075f0bae52ccc32217bdecf9f1d99e7228199e510#npm:3.3.0"],\
           ["@nestjs/core", "virtual:89f547019f7689b6bfdef74bf77ad0749d328998306581b92fa6a12b2a073da48a47b537a84b7e30cec647b075f0bae52ccc32217bdecf9f1d99e7228199e510#npm:10.4.11"],\
+          ["@nestjs/jwt", "virtual:89f547019f7689b6bfdef74bf77ad0749d328998306581b92fa6a12b2a073da48a47b537a84b7e30cec647b075f0bae52ccc32217bdecf9f1d99e7228199e510#npm:10.2.0"],\
           ["@nestjs/mongoose", "virtual:89f547019f7689b6bfdef74bf77ad0749d328998306581b92fa6a12b2a073da48a47b537a84b7e30cec647b075f0bae52ccc32217bdecf9f1d99e7228199e510#npm:10.1.0"],\
           ["@nestjs/passport", "virtual:89f547019f7689b6bfdef74bf77ad0749d328998306581b92fa6a12b2a073da48a47b537a84b7e30cec647b075f0bae52ccc32217bdecf9f1d99e7228199e510#npm:10.0.3"],\
           ["@nestjs/platform-express", "virtual:89f547019f7689b6bfdef74bf77ad0749d328998306581b92fa6a12b2a073da48a47b537a84b7e30cec647b075f0bae52ccc32217bdecf9f1d99e7228199e510#npm:10.4.11"],\
@@ -49,10 +50,12 @@ const RAW_RUNTIME_STATE =
           ["@types/node", "npm:20.17.8"],\
           ["@types/nodemailer", "npm:6.4.17"],\
           ["@types/passport", "npm:1.0.17"],\
+          ["@types/passport-jwt", "npm:4.0.1"],\
           ["@types/supertest", "npm:6.0.2"],\
           ["@typescript-eslint/eslint-plugin", "virtual:89f547019f7689b6bfdef74bf77ad0749d328998306581b92fa6a12b2a073da48a47b537a84b7e30cec647b075f0bae52ccc32217bdecf9f1d99e7228199e510#npm:8.16.0"],\
           ["@typescript-eslint/parser", "virtual:89f547019f7689b6bfdef74bf77ad0749d328998306581b92fa6a12b2a073da48a47b537a84b7e30cec647b075f0bae52ccc32217bdecf9f1d99e7228199e510#npm:8.16.0"],\
           ["bcrypt", "npm:5.1.1"],\
+          ["class-transformer", "npm:0.5.1"],\
           ["dotenv", "npm:16.4.5"],\
           ["eslint", "virtual:89f547019f7689b6bfdef74bf77ad0749d328998306581b92fa6a12b2a073da48a47b537a84b7e30cec647b075f0bae52ccc32217bdecf9f1d99e7228199e510#npm:9.15.0"],\
           ["eslint-config-prettier", "virtual:89f547019f7689b6bfdef74bf77ad0749d328998306581b92fa6a12b2a073da48a47b537a84b7e30cec647b075f0bae52ccc32217bdecf9f1d99e7228199e510#npm:9.1.0"],\
@@ -70,9 +73,11 @@ const RAW_RUNTIME_STATE =
           ["mongoose", "npm:8.8.3"],\
           ["nodemailer", "npm:6.9.16"],\
           ["passport", "npm:0.7.0"],\
+          ["passport-jwt", "npm:4.0.1"],\
           ["prettier", "npm:3.4.1"],\
           ["reflect-metadata", "npm:0.2.2"],\
           ["rxjs", "npm:7.8.1"],\
+          ["slugify", "npm:1.6.6"],\
           ["source-map-support", "npm:0.5.21"],\
           ["supertest", "npm:7.0.0"],\
           ["ts-jest", "virtual:89f547019f7689b6bfdef74bf77ad0749d328998306581b92fa6a12b2a073da48a47b537a84b7e30cec647b075f0bae52ccc32217bdecf9f1d99e7228199e510#npm:29.2.5"],\
@@ -2052,7 +2057,7 @@ const RAW_RUNTIME_STATE =
           ["@types/class-validator", null],\
           ["@types/reflect-metadata", null],\
           ["@types/rxjs", null],\
-          ["class-transformer", null],\
+          ["class-transformer", "npm:0.5.1"],\
           ["class-validator", null],\
           ["iterare", "npm:1.2.1"],\
           ["reflect-metadata", "npm:0.2.2"],\
@@ -2146,6 +2151,30 @@ const RAW_RUNTIME_STATE =
           "@types/rxjs",\
           "reflect-metadata",\
           "rxjs"\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@nestjs/jwt", [\
+      ["npm:10.2.0", {\
+        "packageLocation": "../../../.yarn/berry/cache/@nestjs-jwt-npm-10.2.0-906410301c-10c0.zip/node_modules/@nestjs/jwt/",\
+        "packageDependencies": [\
+          ["@nestjs/jwt", "npm:10.2.0"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:89f547019f7689b6bfdef74bf77ad0749d328998306581b92fa6a12b2a073da48a47b537a84b7e30cec647b075f0bae52ccc32217bdecf9f1d99e7228199e510#npm:10.2.0", {\
+        "packageLocation": "./.yarn/__virtual__/@nestjs-jwt-virtual-9aa57e9088/4/.yarn/berry/cache/@nestjs-jwt-npm-10.2.0-906410301c-10c0.zip/node_modules/@nestjs/jwt/",\
+        "packageDependencies": [\
+          ["@nestjs/jwt", "virtual:89f547019f7689b6bfdef74bf77ad0749d328998306581b92fa6a12b2a073da48a47b537a84b7e30cec647b075f0bae52ccc32217bdecf9f1d99e7228199e510#npm:10.2.0"],\
+          ["@nestjs/common", "virtual:89f547019f7689b6bfdef74bf77ad0749d328998306581b92fa6a12b2a073da48a47b537a84b7e30cec647b075f0bae52ccc32217bdecf9f1d99e7228199e510#npm:10.4.11"],\
+          ["@types/jsonwebtoken", "npm:9.0.5"],\
+          ["@types/nestjs__common", null],\
+          ["jsonwebtoken", "npm:9.0.2"]\
+        ],\
+        "packagePeers": [\
+          "@nestjs/common",\
+          "@types/nestjs__common"\
         ],\
         "linkType": "HARD"\
       }]\
@@ -2837,6 +2866,14 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@types/jsonwebtoken", [\
+      ["npm:9.0.5", {\
+        "packageLocation": "../../../.yarn/berry/cache/@types-jsonwebtoken-npm-9.0.5-523ec98552-10c0.zip/node_modules/@types/jsonwebtoken/",\
+        "packageDependencies": [\
+          ["@types/jsonwebtoken", "npm:9.0.5"],\
+          ["@types/node", "npm:22.10.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
       ["npm:9.0.7", {\
         "packageLocation": "../../../.yarn/berry/cache/@types-jsonwebtoken-npm-9.0.7-da827cdc0b-10c0.zip/node_modules/@types/jsonwebtoken/",\
         "packageDependencies": [\
@@ -2926,6 +2963,28 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@types/passport", "npm:1.0.17"],\
           ["@types/express", "npm:5.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@types/passport-jwt", [\
+      ["npm:4.0.1", {\
+        "packageLocation": "../../../.yarn/berry/cache/@types-passport-jwt-npm-4.0.1-521dae8c91-10c0.zip/node_modules/@types/passport-jwt/",\
+        "packageDependencies": [\
+          ["@types/passport-jwt", "npm:4.0.1"],\
+          ["@types/jsonwebtoken", "npm:9.0.7"],\
+          ["@types/passport-strategy", "npm:0.2.38"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@types/passport-strategy", [\
+      ["npm:0.2.38", {\
+        "packageLocation": "../../../.yarn/berry/cache/@types-passport-strategy-npm-0.2.38-6460f7e728-10c0.zip/node_modules/@types/passport-strategy/",\
+        "packageDependencies": [\
+          ["@types/passport-strategy", "npm:0.2.38"],\
+          ["@types/express", "npm:5.0.0"],\
+          ["@types/passport", "npm:1.0.17"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -4576,6 +4635,15 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../../../.yarn/berry/cache/cjs-module-lexer-npm-1.4.1-4a824480ac-10c0.zip/node_modules/cjs-module-lexer/",\
         "packageDependencies": [\
           ["cjs-module-lexer", "npm:1.4.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["class-transformer", [\
+      ["npm:0.5.1", {\
+        "packageLocation": "../../../.yarn/berry/cache/class-transformer-npm-0.5.1-96b5161e6c-10c0.zip/node_modules/class-transformer/",\
+        "packageDependencies": [\
+          ["class-transformer", "npm:0.5.1"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -10372,6 +10440,7 @@ const RAW_RUNTIME_STATE =
           ["@nestjs/common", "virtual:89f547019f7689b6bfdef74bf77ad0749d328998306581b92fa6a12b2a073da48a47b537a84b7e30cec647b075f0bae52ccc32217bdecf9f1d99e7228199e510#npm:10.4.11"],\
           ["@nestjs/config", "virtual:89f547019f7689b6bfdef74bf77ad0749d328998306581b92fa6a12b2a073da48a47b537a84b7e30cec647b075f0bae52ccc32217bdecf9f1d99e7228199e510#npm:3.3.0"],\
           ["@nestjs/core", "virtual:89f547019f7689b6bfdef74bf77ad0749d328998306581b92fa6a12b2a073da48a47b537a84b7e30cec647b075f0bae52ccc32217bdecf9f1d99e7228199e510#npm:10.4.11"],\
+          ["@nestjs/jwt", "virtual:89f547019f7689b6bfdef74bf77ad0749d328998306581b92fa6a12b2a073da48a47b537a84b7e30cec647b075f0bae52ccc32217bdecf9f1d99e7228199e510#npm:10.2.0"],\
           ["@nestjs/mongoose", "virtual:89f547019f7689b6bfdef74bf77ad0749d328998306581b92fa6a12b2a073da48a47b537a84b7e30cec647b075f0bae52ccc32217bdecf9f1d99e7228199e510#npm:10.1.0"],\
           ["@nestjs/passport", "virtual:89f547019f7689b6bfdef74bf77ad0749d328998306581b92fa6a12b2a073da48a47b537a84b7e30cec647b075f0bae52ccc32217bdecf9f1d99e7228199e510#npm:10.0.3"],\
           ["@nestjs/platform-express", "virtual:89f547019f7689b6bfdef74bf77ad0749d328998306581b92fa6a12b2a073da48a47b537a84b7e30cec647b075f0bae52ccc32217bdecf9f1d99e7228199e510#npm:10.4.11"],\
@@ -10386,10 +10455,12 @@ const RAW_RUNTIME_STATE =
           ["@types/node", "npm:20.17.8"],\
           ["@types/nodemailer", "npm:6.4.17"],\
           ["@types/passport", "npm:1.0.17"],\
+          ["@types/passport-jwt", "npm:4.0.1"],\
           ["@types/supertest", "npm:6.0.2"],\
           ["@typescript-eslint/eslint-plugin", "virtual:89f547019f7689b6bfdef74bf77ad0749d328998306581b92fa6a12b2a073da48a47b537a84b7e30cec647b075f0bae52ccc32217bdecf9f1d99e7228199e510#npm:8.16.0"],\
           ["@typescript-eslint/parser", "virtual:89f547019f7689b6bfdef74bf77ad0749d328998306581b92fa6a12b2a073da48a47b537a84b7e30cec647b075f0bae52ccc32217bdecf9f1d99e7228199e510#npm:8.16.0"],\
           ["bcrypt", "npm:5.1.1"],\
+          ["class-transformer", "npm:0.5.1"],\
           ["dotenv", "npm:16.4.5"],\
           ["eslint", "virtual:89f547019f7689b6bfdef74bf77ad0749d328998306581b92fa6a12b2a073da48a47b537a84b7e30cec647b075f0bae52ccc32217bdecf9f1d99e7228199e510#npm:9.15.0"],\
           ["eslint-config-prettier", "virtual:89f547019f7689b6bfdef74bf77ad0749d328998306581b92fa6a12b2a073da48a47b537a84b7e30cec647b075f0bae52ccc32217bdecf9f1d99e7228199e510#npm:9.1.0"],\
@@ -10407,9 +10478,11 @@ const RAW_RUNTIME_STATE =
           ["mongoose", "npm:8.8.3"],\
           ["nodemailer", "npm:6.9.16"],\
           ["passport", "npm:0.7.0"],\
+          ["passport-jwt", "npm:4.0.1"],\
           ["prettier", "npm:3.4.1"],\
           ["reflect-metadata", "npm:0.2.2"],\
           ["rxjs", "npm:7.8.1"],\
+          ["slugify", "npm:1.6.6"],\
           ["source-map-support", "npm:0.5.21"],\
           ["supertest", "npm:7.0.0"],\
           ["ts-jest", "virtual:89f547019f7689b6bfdef74bf77ad0749d328998306581b92fa6a12b2a073da48a47b537a84b7e30cec647b075f0bae52ccc32217bdecf9f1d99e7228199e510#npm:29.2.5"],\
@@ -11189,6 +11262,17 @@ const RAW_RUNTIME_STATE =
           ["passport-strategy", "npm:1.0.0"],\
           ["pause", "npm:0.0.1"],\
           ["utils-merge", "npm:1.0.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["passport-jwt", [\
+      ["npm:4.0.1", {\
+        "packageLocation": "../../../.yarn/berry/cache/passport-jwt-npm-4.0.1-2841eea09e-10c0.zip/node_modules/passport-jwt/",\
+        "packageDependencies": [\
+          ["passport-jwt", "npm:4.0.1"],\
+          ["jsonwebtoken", "npm:9.0.2"],\
+          ["passport-strategy", "npm:1.0.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -12390,6 +12474,15 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../../../.yarn/berry/cache/slick-npm-1.12.2-a4c282c110-10c0.zip/node_modules/slick/",\
         "packageDependencies": [\
           ["slick", "npm:1.12.2"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["slugify", [\
+      ["npm:1.6.6", {\
+        "packageLocation": "../../../.yarn/berry/cache/slugify-npm-1.6.6-7ce458677d-10c0.zip/node_modules/slugify/",\
+        "packageDependencies": [\
+          ["slugify", "npm:1.6.6"]\
         ],\
         "linkType": "HARD"\
       }]\
