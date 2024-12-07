@@ -17,9 +17,9 @@ export class UserService {
     return this.userModel.findById(id).exec();
   }
 
-  // 특정 유저 조회 (userId 기반)
-  async findByUserId(userId: string): Promise<User> {
-    return this.userModel.findOne({ userId }).exec();
+  // 특정 유저 조회 (userDomain 기반)
+  async findByUserDomain(userDomain: string): Promise<User> {
+    return this.userModel.findOne({ userDomain }).exec();
   }
 
   async findByEmail(email: string): Promise<User | null> {

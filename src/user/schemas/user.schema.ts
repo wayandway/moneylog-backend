@@ -1,8 +1,12 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
+import { Transform } from 'class-transformer';
 
-@Schema()
+@Schema({ timestamps: true, versionKey: false })
 export class User extends Document {
+  @Transform(({ value }) => value.toString())
+  _id: Types.ObjectId;
+
   @Prop({ required: true, unique: true })
   email: string;
 
@@ -13,7 +17,7 @@ export class User extends Document {
   password: string;
 
   @Prop({ required: true, unique: true })
-  userId: string; // 블로그 도메인
+  userDomain: string; // 블로그 도메인
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
