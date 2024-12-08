@@ -10,7 +10,6 @@ export class PostController {
   @Get()
   async findAll(@Req() req: any): Promise<PostDocument[]> {
     const viewerId = req.user?._id;
-    console.log('Viewer ID:', viewerId);
     return this.postService.findAll(viewerId);
   }
 
