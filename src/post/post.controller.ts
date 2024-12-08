@@ -1,11 +1,27 @@
-import { Controller, Get, Post, Patch, Delete, Param, Body, UseGuards, Req, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Patch,
+  Delete,
+  Param,
+  Body,
+  UseGuards,
+  Req,
+  Query,
+  NotFoundException,
+} from '@nestjs/common';
 import { PostService } from './post.service';
+import { UserService } from './../user/user.service';
 import { Post as PostModel, Post as PostDocument } from './schemas/post.schema';
 import { JwtAuthGuard, OptionalJwtAuthGuard } from './../auth/guards';
 
 @Controller('posts')
 export class PostController {
-  constructor(private readonly postService: PostService) {}
+  constructor(
+    private readonly postService: PostService,
+    private readonly userService: UserService
+  ) {}
 
   @UseGuards(OptionalJwtAuthGuard)
   @Get('tags')
@@ -37,10 +53,19 @@ export class PostController {
     return this.postService.findOne(slug, userId);
   }
 
-  @Get('users/:userDomain/posts')
-  async findByAuthor(@Param('userDomain') userDomain: string, @Req() req: any): Promise<PostDocument[]> {
-    const viewerId = req.user?.userDomain;
-    return this.postService.findByAuthor(userDomain, viewerId);
+  @Get(':userDomain/blog')
+  async findBlogByUser(@Param('userDomain') userDomain: string, @Req() req: any) {
+    // 유저 정보 조회
+    const user = await this.userService.findByUserDomain(userDomain);
+    if (!user) {
+      throw new NotFoundException(`User with domain ${userDomain} not found`);
+    }
+
+    // 해당 유저의 게시글 조회
+    const viewerId = req.user?._id || null; // 로그인 여부 확인
+    const posts = await this.postService.findByAuthor(userDomain, viewerId);
+
+    return { user, posts };
   }
 
   @UseGuards(JwtAuthGuard)

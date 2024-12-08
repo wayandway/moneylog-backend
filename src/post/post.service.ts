@@ -142,7 +142,8 @@ export class PostService {
   }
 
   async findByAuthor(userDomain: string, viewerId?: string): Promise<Post[]> {
-    const user = await this.userModel.findOne({ userDomain }).exec();
+    // 유저 도메인으로 유저 조회 (대소문자 무시)
+    const user = await this.userModel.findOne({ userDomain: { $regex: new RegExp(`^${userDomain}$`, 'i') } }).exec();
     if (!user) {
       throw new NotFoundException(`User with domain ${userDomain} not found`);
     }

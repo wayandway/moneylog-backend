@@ -13,16 +13,22 @@ export class AuthService {
     private readonly mailerService: MailerService
   ) {}
 
-  /**
-   * 회원가입 요청
-   */
+  //* 회원가입 요청
   async register(userDto: Partial<User>): Promise<{ message: string }> {
     const { email, userName, password, userDomain } = userDto;
 
-    // 이메일 및userDomain 중복 확인
+    // 필수 필드 검증
+    if (!email || !userName || !password || !userDomain) {
+      throw new BadRequestException('All fields (email, userName, password, userDomain) are required');
+    }
+
+    // 이메일 및 userDomain 중복 확인
     const existingUser = await this.userModel.findOne({ $or: [{ email }, { userDomain }] }).exec();
+
     if (existingUser) {
-      throw new BadRequestException('Email or User ID is already registered');
+      throw new BadRequestException(
+        existingUser.email === email ? 'Email is already registered' : 'User domain is already taken'
+      );
     }
 
     // 비밀번호 암호화
@@ -49,9 +55,7 @@ export class AuthService {
     return { message: 'User registered successfully. Please verify your email.' };
   }
 
-  /**
-   * 이메일 인증
-   */
+  //* 이메일 인증
   async verifyEmail(token: string): Promise<{ message: string }> {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET) as {
@@ -83,9 +87,7 @@ export class AuthService {
     }
   }
 
-  /**
-   * 로그인
-   */
+  //* 로그인
   async login(email: string, password: string): Promise<{ accessToken: string }> {
     const user = await this.userModel.findOne({ email }).exec();
 
