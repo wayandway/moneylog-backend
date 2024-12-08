@@ -8,6 +8,22 @@ export class PostController {
   constructor(private readonly postService: PostService) {}
 
   @UseGuards(OptionalJwtAuthGuard)
+  @Get('tags')
+  async findByTags(@Query('tags') tags: string, @Req() req: any): Promise<PostDocument[]> {
+    const viewerId = req.user?._id || null; // 로그인한 사용자 ID 또는 null
+
+    // 쉼표로 구분된 문자열을 배열로 변환
+    const tagsArray = tags ? tags.split(',').map(tag => tag.trim()) : [];
+
+    // 태그 배열이 비어있으면 에러 처리
+    if (tagsArray.length === 0) {
+      throw new Error('Tags query parameter must not be empty');
+    }
+
+    return this.postService.findByTags(tagsArray, viewerId);
+  }
+
+  @UseGuards(OptionalJwtAuthGuard)
   @Get()
   async findAll(@Req() req: any): Promise<PostDocument[]> {
     const viewerId = req.user?._id || null; // 로그인 상태가 아니면 viewerId는 null
@@ -50,10 +66,5 @@ export class PostController {
   async delete(@Param('id') id: string, @Req() req: any): Promise<{ message: string }> {
     const userObjectId = req.user._id;
     return this.postService.delete(id, userObjectId);
-  }
-
-  @Get('tags')
-  async findByTags(@Query('tags') tags: string[]): Promise<PostDocument[]> {
-    return this.postService.findByTags(tags);
   }
 }

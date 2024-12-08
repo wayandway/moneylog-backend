@@ -156,10 +156,22 @@ export class PostService {
     return posts.filter(post => !post.isPrivate || (viewerId && post.author.toString() === viewerId.toString()));
   }
 
-  async findByTags(tags: string[]): Promise<Post[]> {
-    return this.postModel
-      .find({ tags: { $in: tags }, isPrivate: false })
-      .populate('author', 'userName email')
-      .exec();
+  async findByTags(tags: string[], viewerId?: string): Promise<Post[]> {
+    const filter: any = {
+      tags: { $in: tags }, // 지정된 태그 중 하나라도 포함된 게시글
+    };
+
+    if (!viewerId) {
+      // 비로그인 상태에서는 공개 게시글만 조회
+      filter.isPrivate = false;
+    } else {
+      // 로그인 상태에서는 본인의 비공개 게시글 포함
+      filter.$or = [
+        { isPrivate: false }, // 공개 게시글
+        { author: new Types.ObjectId(viewerId) }, // 본인의 비공개 게시글
+      ];
+    }
+
+    return this.postModel.find(filter).populate('author', 'userName email').exec();
   }
 }
