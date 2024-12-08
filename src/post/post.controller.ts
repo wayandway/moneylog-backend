@@ -1,15 +1,16 @@
 import { Controller, Get, Post, Patch, Delete, Param, Body, UseGuards, Req, Query } from '@nestjs/common';
 import { PostService } from './post.service';
 import { Post as PostModel, Post as PostDocument } from './schemas/post.schema';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard, OptionalJwtAuthGuard } from './../auth/guards';
 
 @Controller('posts')
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
+  @UseGuards(OptionalJwtAuthGuard)
   @Get()
   async findAll(@Req() req: any): Promise<PostDocument[]> {
-    const viewerId = req.user?._id;
+    const viewerId = req.user?._id || null; // 로그인 상태가 아니면 viewerId는 null
     return this.postService.findAll(viewerId);
   }
 
