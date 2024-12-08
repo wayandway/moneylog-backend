@@ -14,9 +14,10 @@ export class PostController {
     return this.postService.findAll(viewerId);
   }
 
+  @UseGuards(OptionalJwtAuthGuard)
   @Get(':slug')
   async findOne(@Param('slug') slug: string, @Req() req: any): Promise<PostDocument> {
-    const userId = req.user?._id;
+    const userId = req.user?._id || null;
     return this.postService.findOne(slug, userId);
   }
 

@@ -132,8 +132,10 @@ export class PostService {
     }
 
     // 권한 확인 (비공개 글 접근 제한)
-    if (post.isPrivate && (!userId || post.author.toString() !== userId.toString())) {
-      throw new NotFoundException(`You do not have access to this post`);
+    if (post.isPrivate) {
+      if (!userId || post.author._id.toString() !== userId.toString()) {
+        throw new NotFoundException(`You do not have access to this post`);
+      }
     }
 
     return post;
