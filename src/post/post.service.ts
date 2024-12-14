@@ -112,30 +112,35 @@ export class PostService {
     const filter: any = {};
 
     if (!viewerId) {
-      // 비로그인 상태에서는 공개된 글만 조회
       filter.isPrivate = false;
     } else {
-      // 로그인 상태에서는 본인의 글(공개/비공개) 또는 다른 사용자의 공개 글만 조회
-      filter.$or = [
-        { isPrivate: false }, // 공개 글
-        { author: new Types.ObjectId(viewerId) }, // 본인의 글 (공개/비공개 포함)
-      ];
+      filter.$or = [{ isPrivate: false }, { author: new Types.ObjectId(viewerId) }];
     }
 
-    return this.postModel.find(filter).populate('author', 'userName email').exec();
+    return this.postModel
+      .find(filter)
+      .populate('author', 'userName email') // 작성자 정보
+      .populate({
+        path: 'comments', // 댓글 필드
+        model: 'Comment', // 명확하게 Comment 모델 참조
+        populate: { path: 'author', select: 'userName email' }, // 댓글 작성자 정보
+      })
+      .exec();
   }
 
   async findOne(slug: string, userId?: string): Promise<Post> {
-    const post = await this.postModel.findOne({ slug }).populate('author', 'userName email').exec();
+    const post = await this.postModel
+      .findOne({ slug })
+      .populate('author', 'userName email')
+      .populate('comments')
+      .exec();
+
     if (!post) {
       throw new NotFoundException(`Post with slug ${slug} not found`);
     }
 
-    // 권한 확인 (비공개 글 접근 제한)
-    if (post.isPrivate) {
-      if (!userId || post.author._id.toString() !== userId.toString()) {
-        throw new NotFoundException(`You do not have access to this post`);
-      }
+    if (post.isPrivate && (!userId || post.author._id.toString() !== userId.toString())) {
+      throw new NotFoundException(`You do not have access to this post`);
     }
 
     return post;
@@ -148,7 +153,12 @@ export class PostService {
       throw new NotFoundException(`User with domain ${userDomain} not found`);
     }
 
-    const posts = await this.postModel.find({ author: user._id }).populate('author', 'userName email').exec();
+    const posts = await this.postModel
+      .find({ author: user._id })
+      .populate('author', 'userName email')
+      .populate('comments')
+      .exec();
+
     if (!posts || posts.length === 0) {
       throw new NotFoundException(`No posts found for user with domain ${userDomain}`);
     }
@@ -173,6 +183,6 @@ export class PostService {
       ];
     }
 
-    return this.postModel.find(filter).populate('author', 'userName email').exec();
+    return this.postModel.find(filter).populate('author', 'userName email').populate('comments').exec();
   }
 }

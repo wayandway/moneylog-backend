@@ -22,6 +22,9 @@ export class Post extends Document {
   @Prop({ default: false })
   isPrivate: boolean;
 
+  @Prop([{ type: Types.ObjectId, ref: 'Comment' }])
+  comments: Types.Array<Comment>;
+
   @Prop({ default: Date.now })
   createdAt: Date;
 

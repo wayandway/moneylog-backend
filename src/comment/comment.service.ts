@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Comment } from './schemas/comment.schema';
 import { Post } from '../post/schemas/post.schema';
 import { User } from '../user/schemas/user.schema';
@@ -13,7 +13,7 @@ export class CommentService {
     @InjectModel(User.name) private userModel: Model<User>
   ) {}
 
-  // 특정 게시물의 댓글 조회
+  //* 특정 게시물의 댓글 조회
   async findByPost(postId: string): Promise<Comment[]> {
     const postExists = await this.postModel.exists({ _id: postId });
     if (!postExists) {
@@ -23,9 +23,9 @@ export class CommentService {
     return this.commentModel.find({ post: postId }).populate('author', 'userName email').exec();
   }
 
-  // 댓글 생성
+  //* 댓글 생성
   async create(postId: string, authorId: string, content: string): Promise<Comment> {
-    const postExists = await this.postModel.exists({ _id: postId });
+    const postExists = await this.postModel.findById(postId);
     const authorExists = await this.userModel.exists({ _id: authorId });
 
     if (!postExists) {
@@ -36,10 +36,15 @@ export class CommentService {
     }
 
     const newComment = new this.commentModel({ content, post: postId, author: authorId });
-    return newComment.save();
+    const savedComment = await newComment.save();
+
+    postExists.comments.push(savedComment);
+    await postExists.save();
+
+    return savedComment;
   }
 
-  // 댓글 수정
+  //* 댓글 수정
   async update(commentId: string, content: string): Promise<Comment> {
     if (!content) {
       throw new BadRequestException('Content is required to update a comment');
@@ -55,12 +60,16 @@ export class CommentService {
     return updatedComment;
   }
 
-  // 댓글 삭제
+  //* 댓글 삭제
   async delete(commentId: string): Promise<{ message: string }> {
     const deletedComment = await this.commentModel.findByIdAndDelete(commentId).exec();
     if (!deletedComment) {
       throw new NotFoundException(`Comment with ID ${commentId} not found`);
     }
+
+    // 게시물의 comments 배열에서 댓글 ID 제거
+    await this.postModel.updateOne({ _id: deletedComment.post }, { $pull: { comments: commentId } }).exec();
+
     return { message: `Comment has been deleted.` };
   }
 }

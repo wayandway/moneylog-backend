@@ -12,12 +12,8 @@ export class CommentController {
   }
 
   @Post()
-  async create(
-    @Body('postId') postId: string,
-    @Body('authorId') authorId: string,
-    @Body('content') content: string
-  ): Promise<Comment> {
-    return this.commentService.create(postId, authorId, content);
+  async create(@Body() body: { postId: string; authorId: string; content: string }): Promise<Comment> {
+    return this.commentService.create(body.postId, body.authorId, body.content);
   }
 
   @Patch(':id')
