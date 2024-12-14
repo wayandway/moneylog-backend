@@ -108,6 +108,7 @@ export class PostService {
     return { message: `Post with ID ${id} has been deleted.` };
   }
 
+  //* 게시글 전체 조회
   async findAll(viewerId?: string): Promise<Post[]> {
     const filter: any = {};
 
@@ -128,11 +129,38 @@ export class PostService {
       .exec();
   }
 
+  //* 게시글 조회 (특정 유저)
+  async findByAuthor(userDomain: string, viewerId?: string): Promise<Post[]> {
+    const user = await this.userModel.findOne({ userDomain: { $regex: new RegExp(`^${userDomain}$`, 'i') } }).exec();
+    if (!user) {
+      throw new NotFoundException(`User with domain ${userDomain} not found`);
+    }
+
+    const posts = await this.postModel
+      .find({ author: user._id })
+      .populate('author', 'userName email') // 게시물 작성자 정보
+      .populate({
+        path: 'comments',
+        populate: { path: 'author', select: 'userName email' }, // 댓글 작성자 정보
+      })
+      .exec();
+
+    if (!posts || posts.length === 0) {
+      throw new NotFoundException(`No posts found for user with domain ${userDomain}`);
+    }
+
+    return posts.filter(post => !post.isPrivate || (viewerId && post.author._id.toString() === viewerId.toString()));
+  }
+
+  //* 게시글 검색 (슬러그 기반)
   async findOne(slug: string, userId?: string): Promise<Post> {
     const post = await this.postModel
       .findOne({ slug })
-      .populate('author', 'userName email')
-      .populate('comments')
+      .populate('author', 'userName email') // 게시물 작성자 정보
+      .populate({
+        path: 'comments',
+        populate: { path: 'author', select: 'userName email' }, // 댓글 작성자 정보
+      })
       .exec();
 
     if (!post) {
@@ -146,43 +174,28 @@ export class PostService {
     return post;
   }
 
-  async findByAuthor(userDomain: string, viewerId?: string): Promise<Post[]> {
-    // 유저 도메인으로 유저 조회 (대소문자 무시)
-    const user = await this.userModel.findOne({ userDomain: { $regex: new RegExp(`^${userDomain}$`, 'i') } }).exec();
-    if (!user) {
-      throw new NotFoundException(`User with domain ${userDomain} not found`);
-    }
-
-    const posts = await this.postModel
-      .find({ author: user._id })
-      .populate('author', 'userName email')
-      .populate('comments')
-      .exec();
-
-    if (!posts || posts.length === 0) {
-      throw new NotFoundException(`No posts found for user with domain ${userDomain}`);
-    }
-
-    // 비공개 글 필터링
-    return posts.filter(post => !post.isPrivate || (viewerId && post.author.toString() === viewerId.toString()));
-  }
-
+  //* 게시글 조회 (태그 기반)
   async findByTags(tags: string[], viewerId?: string): Promise<Post[]> {
     const filter: any = {
-      tags: { $in: tags }, // 지정된 태그 중 하나라도 포함된 게시글
+      tags: { $in: tags }, // 태그 배열에 해당하는 게시글 필터링
     };
 
     if (!viewerId) {
-      // 비로그인 상태에서는 공개 게시글만 조회
-      filter.isPrivate = false;
+      filter.isPrivate = false; // 비로그인 상태에서는 공개 게시글만 조회
     } else {
-      // 로그인 상태에서는 본인의 비공개 게시글 포함
       filter.$or = [
         { isPrivate: false }, // 공개 게시글
         { author: new Types.ObjectId(viewerId) }, // 본인의 비공개 게시글
       ];
     }
 
-    return this.postModel.find(filter).populate('author', 'userName email').populate('comments').exec();
+    return this.postModel
+      .find(filter)
+      .populate('author', 'userName email') // 게시물 작성자 정보
+      .populate({
+        path: 'comments',
+        populate: { path: 'author', select: 'userName email' }, // 댓글 작성자 정보
+      })
+      .exec();
   }
 }
